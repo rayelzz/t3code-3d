@@ -16,6 +16,7 @@ import { useEffect, useEffectEvent, useRef, useState } from "react";
 
 import { APP_DISPLAY_NAME, APP_VERSION } from "../branding";
 import { AppSidebarLayout } from "../components/AppSidebarLayout";
+import { World3DShell } from "../world3d/World3DShell";
 import { CommandPalette } from "../components/CommandPalette";
 import { CustomSnoozeDialogHost } from "../components/CustomSnoozeDialog";
 import { GuestShareDialogHost } from "../components/chat/GuestShareControls";
@@ -210,10 +211,16 @@ function RootRouteBranch() {
   );
   const appShell = (
     <CommandPalette>
-      {/* Setup starts with an empty workspace, so the Welcome page has no thread list. */}
-      <AppSidebarLayout showSidebar={!isWelcome}>
-        <Outlet />
-      </AppSidebarLayout>
+      {/* 首次欢迎引导页保持轻量平面，进入主应用后全面切换为 3D 治愈海岛世界外壳 */}
+      {isWelcome ? (
+        <AppSidebarLayout showSidebar={false}>
+          <Outlet />
+        </AppSidebarLayout>
+      ) : (
+        <World3DShell>
+          <Outlet />
+        </World3DShell>
+      )}
     </CommandPalette>
   );
 
